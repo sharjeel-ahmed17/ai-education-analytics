@@ -1,0 +1,45 @@
+[project]
+name = "edu-copilot"
+version = "0.1.0"
+description = "AI Co-Pilot for Education Analytics"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26.0",
+    "pandas>=2.2.0",
+    "plotly>=5.18.0",
+    "scikit-learn>=1.4.0",
+    "tensorflow>=2.16.1",
+    "tf2onnx>=1.16.1",
+    "onnx>=1.15.0",
+    "onnxruntime>=1.17.0",
+    "langchain>=0.1.0",
+    "langchain-community>=0.0.10",
+    "langchain-text-splitters>=0.0.1",
+    "pypdf>=4.0.0",
+    "langchain-openai>=0.0.5",
+    "langchain-cohere>=0.0.2",
+    "langchain-groq>=0.0.3",
+    "shap>=0.44.0",
+    "numba>=0.59.0",
+    "llvmlite>=0.42.0",
+    "qdrant-client>=1.7.0",
+    "psycopg[binary]>=3.1.18",
+    "sqlalchemy>=2.0.25",
+    "alembic>=1.13.1",
+    "streamlit>=1.31.0",
+    "reportlab>=4.1.0",
+    "python-docx>=1.1.0",
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.2.0",
+    "python-dotenv>=1.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
