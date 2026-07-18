@@ -19,6 +19,20 @@ class ReportData(BaseModel):
     parental_involvement: str = Field(..., description="Parental involvement tier")
     previous_grade: float = Field(..., description="Previous grade percentage")
     
+    # New Multimodal scores
+    tabular_score: Optional[float] = Field(None, description="Tabular model risk score")
+    cnn_legibility: Optional[float] = Field(None, description="CNN Legibility score")
+    cnn_correctness: Optional[float] = Field(None, description="CNN Correctness score")
+    cnn_completeness: Optional[float] = Field(None, description="CNN Completeness score")
+    timeseries_score: Optional[float] = Field(None, description="Time series model risk score")
+    audio_score: Optional[float] = Field(None, description="Audio fluency score")
+    fused_score: Optional[float] = Field(None, description="Fused recommendation score")
+    
+    # Path to explainability artifacts
+    gradcam_image_path: Optional[str] = Field(None, description="Path to Grad-CAM heatmap image")
+    timeseries_attention_path: Optional[str] = Field(None, description="Path to time series attention chart")
+    audio_attention_path: Optional[str] = Field(None, description="Path to audio attention chart")
+    
     # LLM reasoning blocks
     summary: str = Field(..., description="Executive summary of the student's status")
     reasoning: str = Field(..., description="Core quantitative/qualitative analysis text")

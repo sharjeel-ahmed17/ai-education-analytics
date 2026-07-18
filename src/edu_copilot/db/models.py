@@ -56,6 +56,15 @@ class PredictionRecord(Base):
     predicted_class = Column(Integer, nullable=False) # 0 = On Track, 1 = At Risk
     created_at = Column(DateTime, default=datetime.utcnow)
     
+    # Sub-scores and Fused-scores
+    tabular_score = Column(Float, nullable=True)
+    cnn_legibility = Column(Float, nullable=True)
+    cnn_correctness = Column(Float, nullable=True)
+    cnn_completeness = Column(Float, nullable=True)
+    timeseries_score = Column(Float, nullable=True)
+    audio_score = Column(Float, nullable=True)
+    fused_score = Column(Float, nullable=True)
+    
     student = relationship("Student", back_populates="predictions")
     reviews = relationship("ReviewRecord", back_populates="prediction", cascade="all, delete-orphan")
     reports = relationship("ReportRecord", back_populates="prediction", cascade="all, delete-orphan")

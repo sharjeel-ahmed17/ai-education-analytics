@@ -87,10 +87,25 @@ try:
             st.subheader("AI Prediction Details")
             st.write(f"**Student**: {student.name} ({student.student_id})")
             risk_label = "🚨 At Risk" if prediction.predicted_class == 1 else "✅ On Track"
-            st.write(f"**Risk Prediction**: {risk_label}")
-            st.write(f"**Calculated Probability**: {prediction.predicted_prob:.2%}")
+            st.write(f"**Fused Prediction**: {risk_label}")
+            st.write(f"**Fused Risk Score**: {prediction.predicted_prob:.2%}")
             st.write(f"**Model Confidence**: {prediction.confidence_score:.2%}")
             st.write(f"**Flagged On**: {prediction.created_at.strftime('%Y-%m-%d %H:%M')}")
+            
+            st.markdown("---")
+            st.markdown("**Sub-Model Details:**")
+            st.write(f"- Tabular ANN Risk: {prediction.tabular_score:.1%}" if prediction.tabular_score is not None else "- Tabular ANN Risk: N/A")
+            
+            if prediction.cnn_legibility is not None:
+                cnn_mean = (prediction.cnn_legibility + prediction.cnn_correctness + prediction.cnn_completeness) / 3.0
+                st.write(f"- Worksheet CNN Quality: {cnn_mean:.1%}")
+                st.write(f"  *(Legibility: {prediction.cnn_legibility:.0%}, Correctness: {prediction.cnn_correctness:.0%}, Completeness: {prediction.cnn_completeness:.0%})*")
+            else:
+                st.write("- Worksheet CNN Quality: N/A")
+                
+            st.write(f"- Time Series LSTM Risk: {prediction.timeseries_score:.1%}" if prediction.timeseries_score is not None else "- Time Series LSTM Risk: N/A")
+            st.write(f"- Audio GRU Fluency: {prediction.audio_score:.1%}" if prediction.audio_score is not None else "- Audio GRU Fluency: N/A")
+            st.markdown("---")
             
             # Reviewer comments field
             reviewer_notes = st.text_area("Reviewer Audit Notes / Feedback", placeholder="Add internal auditor comments here...")

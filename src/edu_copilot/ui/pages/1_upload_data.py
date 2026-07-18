@@ -159,6 +159,46 @@ else:
                     os.remove(tmp_path)
                 except Exception:
                     pass
+                    
+        # ----------------- SECTION 3: MULTI-MODAL RECORDS -----------------
+        st.markdown("---")
+        st.subheader("3. Multi-modal Performance Records (Worksheets, Time Series, Audio)")
+        st.markdown("Upload supplementary multimodal files for this student's profile.")
+        
+        col_img, col_ts, col_aud = st.columns(3)
+        
+        with col_img:
+            st.write("**Worksheet Scan (.PNG/.JPG)**")
+            uploaded_img = st.file_uploader("Upload scanned sheet", type=["png", "jpg", "jpeg"], key="uploader_img")
+            if uploaded_img:
+                dest_dir = f"data/sample/students/{target_student_id}"
+                os.makedirs(dest_dir, exist_ok=True)
+                img_path = os.path.join(dest_dir, "worksheet.png")
+                with open(img_path, "wb") as f:
+                    f.write(uploaded_img.getvalue())
+                st.success(f"Worksheet scan saved for {target_student_id}.")
+                
+        with col_ts:
+            st.write("**Weekly Activity Sequence (.CSV)**")
+            uploaded_ts = st.file_uploader("Upload activity sequence", type=["csv"], key="uploader_ts")
+            if uploaded_ts:
+                dest_dir = f"data/sample/students/{target_student_id}"
+                os.makedirs(dest_dir, exist_ok=True)
+                ts_path = os.path.join(dest_dir, "timeseries.csv")
+                with open(ts_path, "wb") as f:
+                    f.write(uploaded_ts.getvalue())
+                st.success(f"Time-series sequence saved for {target_student_id}.")
+                
+        with col_aud:
+            st.write("**Oral Exam Recording (.WAV)**")
+            uploaded_aud = st.file_uploader("Upload speech recording", type=["wav"], key="uploader_aud")
+            if uploaded_aud:
+                dest_dir = f"data/sample/students/{target_student_id}"
+                os.makedirs(dest_dir, exist_ok=True)
+                aud_path = os.path.join(dest_dir, "audio.wav")
+                with open(aud_path, "wb") as f:
+                    f.write(uploaded_aud.getvalue())
+                st.success(f"Oral response WAV saved for {target_student_id}.")
 
 st.markdown("---")
 

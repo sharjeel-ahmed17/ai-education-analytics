@@ -38,11 +38,15 @@ else:
         "family_income": b.family_income,
         "internet_access": b.internet_access
     } for b in background_tabular])
+    # Student Selector (Global to all Local Explanations)
+    options_map = {f"{s.name} ({s.student_id})": s.student_id for s in students}
+    selected_label = st.selectbox("Select Student to Profile", list(options_map.keys()), key="global_student_selector")
+    target_student_id = options_map[selected_label]
     
-    tab_global, tab_local, tab_gradcam = st.tabs([
+    tab_global, tab_local, tab_multimodal = st.tabs([
         "📊 Global Feature Importance", 
         "🔍 Local SHAP Explanations", 
-        "📷 CV Grad-CAM Stub (Out-of-Scope)"
+        "📷 Multimodal (CNN & RNN) Explanations"
     ])
     
     # ----------------- TAB 1: GLOBAL PERMUTATION IMPORTANCE -----------------
@@ -86,11 +90,8 @@ else:
             "toward 'At Risk' (positive values in red) or pulled it toward 'On Track' (negative values in blue)."
         )
         
-        options_map = {f"{s.name} ({s.student_id})": s.student_id for s in students}
-        selected_label = st.selectbox("Select Student to Profile", list(options_map.keys()), key="shap_student_selector")
-        target_student_id = options_map[selected_label]
-        
         # Get target student tabular info
+
         student_tab = next((b for b in background_tabular if b.student_id == target_student_id), None)
         
         if student_tab:
@@ -159,21 +160,37 @@ else:
                 except Exception as e:
                     st.error(f"Error executing KernelExplainer calculations: {e}")
                     
-    # ----------------- TAB 3: GRAD-CAM STUB DETAILS -----------------
-    with tab_gradcam:
-        st.subheader("Grad-CAM Computer Vision Extension Hook")
+    # ----------------- TAB 3: MULTIMODAL EXPLANATIONS -----------------
+    with tab_multimodal:
+        st.subheader("Multimodal Saliency & Attention Maps")
         st.markdown(
-            "> [!NOTE]\n"
-            "> Grad-CAM is a visual explanation technique for Convolutional Neural Networks (CNNs). "
-            "Because image and audio modalities are explicitly out-of-scope for the primary predictor, "
-            "this hook remains a code stub for future upgrades."
+            "Below are the visual explanation artifacts generated during the last inference run for the selected student. "
+            "If they are not showing, please execute **Run Predictions** for this student first."
         )
         
-        # Load stub contents to display
-        stub_file = "src/edu_copilot/xai/gradcam_stub.py"
-        if os.path.exists(stub_file):
-            with open(stub_file, "r", encoding="utf-8") as f:
-                code_content = f.read()
-            st.code(code_content, language="python")
-        else:
-            st.error("Grad-CAM stub script missing.")
+        gradcam_path = f"src/edu_copilot/models/artifacts/{target_student_id}_gradcam.png"
+        ts_path = f"src/edu_copilot/models/artifacts/{target_student_id}_attention_ts.png"
+        audio_path = f"src/edu_copilot/models/artifacts/{target_student_id}_attention_audio.png"
+        
+        cols = st.columns(3)
+        with cols[0]:
+            st.write("### CNN Grad-CAM Saliency")
+            if os.path.exists(gradcam_path):
+                st.image(gradcam_path, use_container_width=True)
+            else:
+                st.info("No Grad-CAM image found. Run predictions to generate.")
+                
+        with cols[1]:
+            st.write("### LSTM Time Series Attention")
+            if os.path.exists(ts_path):
+                st.image(ts_path, use_container_width=True)
+            else:
+                st.info("No time series attention chart found. Run predictions to generate.")
+                
+        with cols[2]:
+            st.write("### GRU Audio Saliency")
+            if os.path.exists(audio_path):
+                st.image(audio_path, use_container_width=True)
+            else:
+                st.info("No audio saliency chart found. Run predictions to generate.")
+

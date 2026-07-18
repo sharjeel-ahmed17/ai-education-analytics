@@ -136,10 +136,84 @@ def generate_pdf_report(data: ReportData, output_stream: BytesIO) -> None:
     story.append(metrics_table)
     story.append(Spacer(1, 15))
     
+    # 4.1. Multimodal Sub-scores Table
+    story.append(Paragraph("MODEL MULTIMODAL SUB-SCORES", section_title_style))
+    story.append(Paragraph(
+        "Below are the individual risk and quality probabilities extracted from each data modality. "
+        "These are normalized and fused into the final composite risk score.", body_style
+    ))
+    story.append(Spacer(1, 5))
+    
+    cnn_mean = (data.cnn_legibility + data.cnn_correctness + data.cnn_completeness) / 3.0 if data.cnn_legibility is not None else None
+    subscores_data = [
+        [Paragraph("<b>Predictive Modality</b>", body_style), Paragraph("<b>Sub-Score Value</b>", body_style)],
+        [Paragraph("Tabular ANN Student Risk", body_style), Paragraph(f"{data.tabular_score:.1%}" if data.tabular_score is not None else "N/A", body_style)],
+        [Paragraph("Worksheet CNN Quality (Mean)", body_style), Paragraph(f"{cnn_mean:.1%} (Legibility: {data.cnn_legibility:.0%}, Correctness: {data.cnn_correctness:.0%}, Completeness: {data.cnn_completeness:.0%})" if cnn_mean is not None else "N/A", body_style)],
+        [Paragraph("Weekly Activity LSTM Risk", body_style), Paragraph(f"{data.timeseries_score:.1%}" if data.timeseries_score is not None else "N/A", body_style)],
+        [Paragraph("Oral Exam GRU Fluency", body_style), Paragraph(f"{data.audio_score:.1%}" if data.audio_score is not None else "N/A", body_style)],
+        [Paragraph("<b>Fused Composite Recommendation Risk</b>", body_style), Paragraph(f"<b>{data.fused_score:.1%}</b>" if data.fused_score is not None else "N/A", body_style)]
+    ]
+    
+    subscores_table = Table(subscores_data, colWidths=[180, 260])
+    subscores_table.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#E5E7EB')),
+        ('BOX', (0,0), (-1,-1), 1, border_color),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, border_color),
+        ('PADDING', (0,0), (-1,-1), 6),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+    ]))
+    story.append(subscores_table)
+    story.append(Spacer(1, 15))
+    
     # 5. Section 3: Action Plan
     story.append(Paragraph("3. ACTIONABLE INTERVENTION PLAN", section_title_style))
     for i, item in enumerate(data.recommendations):
         story.append(Paragraph(f"<b>{i+1}.</b> {item}", bullet_style))
+        
+    # 5.1. Section 4: Explainability Maps
+    import os
+    from reportlab.platypus import Image as RLImage
+    
+    images_flowables = []
+    
+    # Check and add Grad-CAM image
+    if data.gradcam_image_path and os.path.exists(data.gradcam_image_path):
+        try:
+            img1 = RLImage(data.gradcam_image_path, width=130, height=130)
+            images_flowables.append(img1)
+        except Exception:
+            pass
+            
+    # Check and add time-series attention chart
+    if data.timeseries_attention_path and os.path.exists(data.timeseries_attention_path):
+        try:
+            img2 = RLImage(data.timeseries_attention_path, width=140, height=80)
+            images_flowables.append(img2)
+        except Exception:
+            pass
+            
+    # Check and add audio attention chart
+    if data.audio_attention_path and os.path.exists(data.audio_attention_path):
+        try:
+            img3 = RLImage(data.audio_attention_path, width=140, height=80)
+            images_flowables.append(img3)
+        except Exception:
+            pass
+            
+    if images_flowables:
+        story.append(Spacer(1, 10))
+        story.append(Paragraph("4. MULTIMODAL EXPLAINABILITY ARTIFACTS", section_title_style))
+        story.append(Paragraph("Saliency mapping (CNN Grad-CAM) and temporal attention weighting charts (Time Series & Audio) highlighting key inference regions:", body_style))
+        story.append(Spacer(1, 8))
+        
+        # Place images in a row layout table
+        images_table = Table([images_flowables], colWidths=[150] * len(images_flowables))
+        images_table.setStyle(TableStyle([
+            ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('PADDING', (0,0), (-1,-1), 4),
+        ]))
+        story.append(images_table)
         
     # Optional Reviewer Notes Block
     if data.reviewer_notes:
