@@ -1,0 +1,95 @@
+Create a 10-slide Gamma presentation for "EduCopilot — AI Co-Pilot for Education Analytics" using a modern, clean design with deep blue (#1E3A8A) as the primary color and a light gray (#F8FAFC) background. Use a professional, data-driven tone suitable for school district administrators and university stakeholders.
+
+**Slide 1: Title Slide**
+- Title: "EduCopilot"
+- Subtitle: "AI Co-Pilot for Education Analytics"
+- Tagline: "A production-grade decision support platform combining deep predictive modeling with Human-in-the-Loop controls."
+- Use a large centered hero layout with a graduation cap or academic icon.
+
+**Slide 2: The Problem**
+- Headline: "Educators Are Drowning in Data, Starved for Insights"
+- Bullet points:
+  - Student data is scattered across LMS grades, attendance logs, counselor notes, and PDF report cards — no unified view
+  - At-risk students are identified too late, often after mid-term failures
+  - Counselors lack tools to synthesize multimodal data and recommend targeted interventions
+  - Existing analytics tools are black-boxes — no explainability, no trust
+- Visual: Split screen showing scattered papers/files vs. a clean dashboard.
+
+**Slide 3: Our Solution**
+- Headline: "EduCopilot — One Platform to Predict, Explain, and Act"
+- Key capabilities in a 3-column grid:
+  - Column 1 — "Predict": Deep learning ANN model identifies at-risk students with high accuracy using 9 key features (GPA, attendance, study hours, sleep, etc.)
+  - Column 2 — "Explain": SHAP-based explainability maps every prediction back to individual feature contributions
+  - Column 3 — "Act": Human-in-the-loop review queue ensures counselors approve or modify recommendations before any action is taken
+- Bottom note: "Ingests CSV, PDF, and free-text teacher notes."
+
+**Slide 4: System Architecture**
+- Headline: "End-to-End Architecture"
+- Show a visual flow diagram:
+  1. Data Ingestion (CSV → Preprocessor, PDF → pypdf Parser, TXT → Text Loader)
+  2. Storage Layer (Relational DB: SQLite/PostgreSQL + Qdrant Vector DB)
+  3. Prediction Engine (Keras ANN → ONNX Runtime → SHAP Explainer)
+  4. LLM Orchestration (LangChain Chains + Cohere/OpenAI Embeddings + RAG)
+  5. Report Generation (ReportLab PDF + python-docx Word export)
+  6. Streamlit UI (6 interactive pages)
+- Keep flow left-to-right, color-coded by subsystem.
+
+**Slide 5: Data Ingestion & Preprocessing**
+- Headline: "Ingest Anything — Structured or Unstructured"
+- Three data modalities in cards:
+  - Card 1: "Tabular (CSV)" — Student GPA, attendance, study hours, parental involvement, extracurriculars, sleep, previous grade, family income, internet access. Standard scaling & categorical encoding applied.
+  - Card 2: "Unstructured (TXT)" — Counselor/teacher free-text notes parsed via LangChain text splitters, embedded, and indexed in Qdrant by student_id.
+  - Card 3: "PDF Reports" — Term report cards parsed via pypdf, text extracted and embedded into vector store.
+- Note: "All data linked by unique student_id across modalities."
+
+**Slide 6: Predictive Engine & Explainability**
+- Headline: "Deep Learning + Explainable AI"
+- Left half — Model Architecture:
+  - Keras Sequential ANN: Input(9) → Dense(32, ReLU) → BatchNorm → Dropout(0.2) → Dense(16, ReLU) → BatchNorm → Dropout(0.2) → Dense(1, Sigmoid)
+  - Optimizer: Adam (lr=0.005), Loss: Binary Crossentropy
+  - Exported to ONNX for production inference
+- Right half — XAI:
+  - SHAP KernelExplainer with k-means reference background
+  - Per-student feature attribution waterfall charts
+  - Global feature importance rankings
+  - Confidence scores mapped from distance-to-threshold
+- Bottom note: "Binary classification: 0 = On Track, 1 = At Risk"
+
+**Slide 7: LLM Reasoning & RAG**
+- Headline: "Context-Aware Narrative Generation"
+- Flow diagram showing:
+  - Vector store (Qdrant) → retrieves relevant student notes/chunks
+  - ANN prediction outputs → passed as context
+  - LangChain chain → synthesizes quantitative + qualitative data
+  - Output: narrative summary, reasoning, and intervention recommendations
+- Provider flexibility shown as toggle:
+  - Primary: OpenAI GPT-4o-mini or Groq Llama-3.1
+  - Fallback: Mock LLM generator (no API key required)
+- Key value: "Combines numerical risk scores with qualitative teacher sentiment for richer recommendations."
+
+**Slide 8: Human-in-the-Loop Workflow**
+- Headline: "AI Suggests, Humans Decide"
+- Workflow steps shown as a horizontal process:
+  1. ANN generates prediction + SHAP explanation
+  2. LLM drafts intervention report
+  3. Analyst reviews in HITL queue → can Approve, Reject, or Modify with professional notes
+  4. Finalized report stored and exported
+- Key metrics callout: "Full audit trail — every prediction, review action, and modification is logged with timestamps."
+- Visual: Streamlit UI mockup showing the review queue with status badges (Pending, Approved, Rejected, Modified).
+
+**Slide 9: Business Model**
+- Headline: "Flexible Pricing for Every Institution"
+- 3 pricing tiers in a comparison table:
+  - Tier 1 — School Pilot: $2,500/year, up to 500 students
+  - Tier 2 — District Enterprise: $5.00/student/year, includes SIS integration (Canvas, PowerSchool)
+  - Tier 3 — Higher Ed / University: Tiered by enrollment brackets, advanced reporting & counselor audit dashboards
+- Bottom: "Target customers: K-12 school districts, higher education institutions, online learning academies."
+
+**Slide 10: Go-to-Market & Get Started**
+- Headline: "Bringing EduCopilot to Schools"
+- GTM channels as bullet list:
+  - Publish on SIS App Stores (PowerSchool, Canvas LMS, Blackboard)
+  - Present at state superintendent & educational leadership conferences
+  - Content marketing: Whitepapers on "Explainable AI in Student Retention"
+- Closing call-to-action: "Contact us for a pilot demo."
+- Footer with tagline: "EduCopilot — Predict. Explain. Intervene."
