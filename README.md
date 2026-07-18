@@ -2,6 +2,8 @@
 
 A production-grade decision support platform combining deep predictive modeling with Human-in-the-Loop controls. Identifies at-risk students, explains predictions via SHAP, and generates intervention reports — all with an analyst review gate.
 
+[Presentation Deck](https://docs.google.com/presentation/d/1Zh1FWKvhHs0Hj9PtG3gsOhXoXwBV4oOYcnqS7Hsc2B8/edit?usp=sharing)
+
 ## Features
 
 - **Multimodal Data Ingestion** — CSV (grades, attendance), PDF (report cards), TXT (counselor notes)
