@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduCopilot — AI Co-Pilot for Education Analytics</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Boxicons CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ==========================================
+         SIDEBAR
+         ========================================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🎓</div>
+            <span class="sidebar-title">EduCopilot</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a class="sidebar-link active" data-section="dashboard">
+                    <i class="bx bxs-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a class="sidebar-link" data-section="upload">
+                    <i class="bx bx-cloud-upload"></i>
+                    <span>Upload Data</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a class="sidebar-link" data-section="predictions">
+                    <i class="bx bx-line-chart"></i>
+                    <span>Risk Predictions</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a class="sidebar-link" data-section="hitl">
+                    <i class="bx bx-user-check"></i>
+                    <span>HITL Review Queue</span>
+                    <span class="badge-tag danger" style="padding: 2px 6px; font-size: 0.65rem; margin-left: auto;" id="hitl-badge-count">5</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a class="sidebar-link" data-section="explainability">
+                    <i class="bx bx-brain"></i>
+                    <span>Explainability (XAI)</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a class="sidebar-link" data-section="reports">
+                    <i class="bx bx-file"></i>
+                    <span>Reports & Exports</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Analyst Avatar" class="sidebar-user-avatar">
+            <div class="sidebar-user-info">
+                <span class="sidebar-user-name">Sarah Jenkins</span>
+                <span class="sidebar-user-role">Senior Analyst</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT AREA
+         ========================================== -->
+    <main class="main-content">
+        <!-- NAVBAR -->
+        <header class="navbar">
+            <div class="navbar-left">
+                <button class="sidebar-toggle-btn" id="sidebar-toggle" title="Toggle Sidebar">
+                    <i class="bx bx-menu-alt-left"></i>
+                </button>
+                <div class="navbar-search">
+                    <i class="bx bx-search"></i>
+                    <input type="text" placeholder="Search student profiles, reports...">
+                </div>
+            </div>
+            <div class="navbar-right">
+                <button class="navbar-action-btn" id="theme-toggle" title="Toggle Theme">
+                    <i class="bx bx-sun" id="theme-icon"></i>
+                </button>
+                <button class="navbar-action-btn" title="View Notifications">
+                    <i class="bx bx-bell"></i>
+                    <span class="badge"></span>
+                </button>
+                <button class="navbar-action-btn" title="System Status">
+                    <i class="bx bx-pulse" style="color: var(--color-success);"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTENT BODY -->
+        <div class="content-body">
+
+            <!-- ==========================================
+                 SECTION: DASHBOARD
+                 ========================================== -->
+            <section class="app-section active" id="dashboard">
+                <div class="section-header">
+                    <h1 class="section-title">Overview Dashboard</h1>
+                    <p class="section-desc">Real-time cohort statistics, predictive risk index summaries, and pending audit workloads.</p>
+                </div>
+
+                <!-- STATS KPI GRID -->
+                <div class="stats-grid">
+                    <div class="card stat-card">
+                        <div class="stat-card-left">
+                            <span class="stat-card-label">Total Cohort</span>
+                            <span class="stat-card-value">1,420</span>
+                            <span class="stat-card-trend up"><i class="bx bx-trending-up"></i> +12% this term</span>
+                        </div>
+                        <div class="stat-card-icon primary"><i class="bx bxs-group"></i></div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-card-left">
+                            <span class="stat-card-label">Risk Models Run</span>
+                            <span class="stat-card-value">3,892</span>
+                            <span class="stat-card-trend up"><i class="bx bx-check-double"></i> 100% active</span>
+                        </div>
+                        <div class="stat-card-icon info"><i class="bx bx-line-chart"></i></div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-card-left">
+                            <span class="stat-card-label">Pending Reviews</span>
+                            <span class="stat-card-value" id="pending-reviews-count">5</span>
+                            <span class="stat-card-trend down"><i class="bx bx-time"></i> Action needed</span>
+                        </div>
+                        <div class="stat-card-icon danger"><i class="bx bx-error-alt"></i></div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-card-left">
+                            <span class="stat-card-label">Reports Exported</span>
+                            <span class="stat-card-value">245</span>
+                            <span class="stat-card-trend up"><i class="bx bxs-file-pdf"></i> 14 exported today</span>
+                        </div>
+                        <div class="stat-card-icon success"><i class="bx bxs-file"></i></div>
+                    </div>
+                </div>
+
+                <!-- MAIN WORKSPACE LAYOUT -->
+                <div class="two-col-layout">
+                    <!-- Left: At-Risk Students Overview -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">High-Risk Student Alert Queue</h2>
+                            <button class="btn btn-secondary btn-sm" onclick="switchSection('predictions')">View All</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="modern-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Full Name</th>
+                                        <th>Academic Risk</th>
+                                        <th>Absences</th>
+                                        <th>Model Confidence</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--color-primary);">STU-0091</td>
+                                        <td>Alexander Wright</td>
+                                        <td><span class="badge-tag danger">High Risk</span></td>
+                                        <td>18 days</td>
+                                        <td>94.2%</td>
+                                        <td><button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Alexander Wright', 94.2, {Attendance: 0.38, Failures: 0.25, StudyTime: -0.12, G1: 0.18, G2: 0.15})">Inspect (XAI)</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--color-primary);">STU-0243</td>
+                                        <td>Emily Martinez</td>
+                                        <td><span class="badge-tag danger">High Risk</span></td>
+                                        <td>14 days</td>
+                                        <td>89.7%</td>
+                                        <td><button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Emily Martinez', 89.7, {Attendance: 0.32, Failures: 0.19, StudyTime: -0.08, G1: 0.21, G2: 0.17})">Inspect (XAI)</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--color-primary);">STU-1082</td>
+                                        <td>Marcus Thompson</td>
+                                        <td><span class="badge-tag warning">Medium Risk</span></td>
+                                        <td>8 days</td>
+                                        <td>74.5%</td>
+                                        <td><button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Marcus Thompson', 74.5, {Attendance: 0.15, Failures: 0.12, StudyTime: -0.18, G1: 0.09, G2: 0.05})">Inspect (XAI)</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--color-primary);">STU-0751</td>
+                                        <td>Chloe Jenkins</td>
+                                        <td><span class="badge-tag warning">Medium Risk</span></td>
+                                        <td>9 days</td>
+                                        <td>68.1%</td>
+                                        <td><button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Chloe Jenkins', 68.1, {Attendance: 0.18, Failures: 0.05, StudyTime: -0.05, G1: 0.11, G2: 0.07})">Inspect (XAI)</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--color-primary);">STU-0422</td>
+                                        <td>Daniel Kim</td>
+                                        <td><span class="badge-tag success">Low Risk</span></td>
+                                        <td>2 days</td>
+                                        <td>18.4%</td>
+                                        <td><button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Daniel Kim', 18.4, {Attendance: -0.22, Failures: -0.15, StudyTime: 0.25, G1: -0.18, G2: -0.20})">Inspect (XAI)</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right: Performance & Action Panel -->
+                    <div class="card glass-panel" style="display: flex; flex-direction: column; gap: 20px;">
+                        <h2 class="card-title">Neural Net Health</h2>
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">
+                                    <span>Prediction Accuracy</span>
+                                    <span>92.8%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill primary" style="width: 92.8%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">
+                                    <span>Model Alignment Score</span>
+                                    <span>96.5%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill success" style="width: 96.5%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid var(--border-color);">
+
+                        <h3 class="card-title" style="font-size: 1.1rem; margin-top: 10px;">Quick Interventions</h3>
+                        <p class="section-desc" style="font-size: 0.85rem; margin-bottom: 10px;">Start processing new report card databases to predict academic risk scales immediately.</p>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="switchSection('upload')">
+                            <i class="bx bx-upload"></i> Upload Term Cohort
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECTION: UPLOAD DATA
+                 ========================================== -->
+            <section class="app-section" id="upload">
+                <div class="section-header">
+                    <h1 class="section-title">Multimodal Ingestion Pipeline</h1>
+                    <p class="section-desc">Drop quantitative spreadsheets, psychologist assessment transcripts, or counselor documents to begin predictive analysis.</p>
+                </div>
+
+                <div class="two-col-layout">
+                    <!-- Left: Upload interface -->
+                    <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
+                        <h2 class="card-title">Upload Active Dossier</h2>
+                        <div class="upload-zone" id="drop-zone">
+                            <i class="bx bx-cloud-upload"></i>
+                            <div class="upload-zone-title">Drag & drop files here or click to browse</div>
+                            <div class="upload-zone-desc">Supports CSV (academic logs), PDF (psychological records), or TXT (counselor notes)</div>
+                            <input type="file" id="file-input" style="display: none;" multiple>
+                        </div>
+                        <div id="file-list-container" style="display: none; flex-direction: column; gap: 10px;">
+                            <h4 style="font-size: 0.9rem; font-weight: 700;">Files Selected:</h4>
+                            <div id="selected-files" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                            <button class="btn btn-primary" style="margin-top: 10px;" id="btn-process-upload">
+                                <i class="bx bx-cpu"></i> Ingest & Preprocess Files
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Right: Pipeline Guidance -->
+                    <div class="card glass-panel" style="display: flex; flex-direction: column; gap: 15px;">
+                        <h3 class="card-title">Supported Sources</h3>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 16px; padding-top: 10px;">
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <div class="stat-card-icon primary" style="width: 36px; height: 36px; font-size: 1.1rem; flex-shrink: 0;"><i class="bx bx-spreadsheet"></i></div>
+                                <div>
+                                    <h4 style="font-size: 0.9rem; font-weight: 700;">Student Cohort Log (CSV)</h4>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Contains quantitative features (GPA, absences, failures, study hours) fed directly into the ANN predictive engine.</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <div class="stat-card-icon success" style="width: 36px; height: 36px; font-size: 1.1rem; flex-shrink: 0;"><i class="bx bx-file-blank"></i></div>
+                                <div>
+                                    <h4 style="font-size: 0.9rem; font-weight: 700;">Counselor Progress Summaries (TXT/PDF)</h4>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Unstructured insights parsed using embedding pipelines and loaded into the Qdrant DB for vector similarity lookups.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECTION: RISK PREDICTIONS
+                 ========================================== -->
+            <section class="app-section" id="predictions">
+                <div class="section-header">
+                    <h1 class="section-title">Deep Learning Inference Center</h1>
+                    <p class="section-desc">Review neural model calculations based on demographic, social, and terminal-grade vectors.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="flex-wrap: wrap; gap: 15px;">
+                        <h2 class="card-title">ANN Inference Pipeline Outputs</h2>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <input class="form-control" type="text" placeholder="Filter by Student ID/Name" style="width: 200px; height: 38px;">
+                            <select class="form-control" style="width: 150px; height: 38px;">
+                                <option value="all">All Risks</option>
+                                <option value="high">High Risk (>80%)</option>
+                                <option value="medium">Medium Risk (50-80%)</option>
+                                <option value="low">Low Risk (<50%)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Full Name</th>
+                                    <th>Failures</th>
+                                    <th>Study Time (Wkly)</th>
+                                    <th>Attendance Risk</th>
+                                    <th>Predicted Risk Score</th>
+                                    <th>Classification</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 600; color: var(--color-primary);">STU-0091</td>
+                                    <td>Alexander Wright</td>
+                                    <td>3 failures</td>
+                                    <td>< 2 hours</td>
+                                    <td><span class="badge-tag danger">Critical (18 Abs)</span></td>
+                                    <td style="font-weight: 700; color: var(--color-danger);">94.2%</td>
+                                    <td><span class="badge-tag danger">High Risk</span></td>
+                                    <td style="display: flex; gap: 8px;">
+                                        <button class="btn btn-primary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Alexander Wright', 94.2, {Attendance: 0.38, Failures: 0.25, StudyTime: -0.12, G1: 0.18, G2: 0.15})">XAI Analysis</button>
+                                        <button class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="queueReview('STU-0091', 'Alexander Wright', 94.2, 'Critical attendance failures mixed with consecutive final grade falls.')">Queue Review</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600; color: var(--color-primary);">STU-0243</td>
+                                    <td>Emily Martinez</td>
+                                    <td>2 failures</td>
+                                    <td>2-5 hours</td>
+                                    <td><span class="badge-tag danger">High (14 Abs)</span></td>
+                                    <td style="font-weight: 700; color: var(--color-danger);">89.7%</td>
+                                    <td><span class="badge-tag danger">High Risk</span></td>
+                                    <td style="display: flex; gap: 8px;">
+                                        <button class="btn btn-primary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Emily Martinez', 89.7, {Attendance: 0.32, Failures: 0.19, StudyTime: -0.08, G1: 0.21, G2: 0.17})">XAI Analysis</button>
+                                        <button class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="queueReview('STU-0243', 'Emily Martinez', 89.7, 'Psychologist reports indicators of academic burnout.')">Queue Review</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600; color: var(--color-primary);">STU-1082</td>
+                                    <td>Marcus Thompson</td>
+                                    <td>1 failure</td>
+                                    <td>2-5 hours</td>
+                                    <td><span class="badge-tag warning">Moderate (8 Abs)</span></td>
+                                    <td style="font-weight: 700; color: var(--color-warning);">74.5%</td>
+                                    <td><span class="badge-tag warning">Medium Risk</span></td>
+                                    <td style="display: flex; gap: 8px;">
+                                        <button class="btn btn-primary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Marcus Thompson', 74.5, {Attendance: 0.15, Failures: 0.12, StudyTime: -0.18, G1: 0.09, G2: 0.05})">XAI Analysis</button>
+                                        <button class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="queueReview('STU-1082', 'Marcus Thompson', 74.5, 'Requires attention due to sudden GPA decrease.')">Queue Review</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600; color: var(--color-primary);">STU-0751</td>
+                                    <td>Chloe Jenkins</td>
+                                    <td>0 failures</td>
+                                    <td>< 2 hours</td>
+                                    <td><span class="badge-tag warning">Moderate (9 Abs)</span></td>
+                                    <td style="font-weight: 700; color: var(--color-warning);">68.1%</td>
+                                    <td><span class="badge-tag warning">Medium Risk</span></td>
+                                    <td style="display: flex; gap: 8px;">
+                                        <button class="btn btn-primary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Chloe Jenkins', 68.1, {Attendance: 0.18, Failures: 0.05, StudyTime: -0.05, G1: 0.11, G2: 0.07})">XAI Analysis</button>
+                                        <button class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="queueReview('STU-0751', 'Chloe Jenkins', 68.1, 'Needs study routine updates.')">Queue Review</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600; color: var(--color-primary);">STU-0422</td>
+                                    <td>Daniel Kim</td>
+                                    <td>0 failures</td>
+                                    <td>> 10 hours</td>
+                                    <td><span class="badge-tag success">Excellent (2 Abs)</span></td>
+                                    <td style="font-weight: 700; color: var(--color-success);">18.4%</td>
+                                    <td><span class="badge-tag success">Low Risk</span></td>
+                                    <td style="display: flex; gap: 8px;">
+                                        <button class="btn btn-primary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="viewExplainability('Daniel Kim', 18.4, {Attendance: -0.22, Failures: -0.15, StudyTime: 0.25, G1: -0.18, G2: -0.20})">XAI Analysis</button>
+                                        <button class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem;" onclick="queueReview('STU-0422', 'Daniel Kim', 18.4, 'Low risk profile verified.')">Queue Review</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECTION: HITL REVIEW QUEUE
+                 ========================================== -->
+            <section class="app-section" id="hitl">
+                <div class="section-header">
+                    <h1 class="section-title">Human-in-the-Loop Review Queue</h1>
+                    <p class="section-desc">Verify LLM-synthesized qualitative counselor dossiers and modify final action recommendations before export.</p>
+                </div>
+
+                <div class="two-col-layout">
+                    <!-- Left: HITL Queue items -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;" id="hitl-queue-container">
+                        <!-- Queue Item 1 -->
+                        <div class="card hitl-card" id="hitl-item-1">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                <div>
+                                    <h3 style="font-size: 1.15rem; font-weight: 700;">Alexander Wright (ID: STU-0091)</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Predictive Risk: <strong style="color: var(--color-danger);">94.2%</strong> &bull; Class Grade Average: <b>D+</b></p>
+                                </div>
+                                <span class="badge-tag danger">Awaiting Audit</span>
+                            </div>
+                            
+                            <div style="background-color: var(--bg-primary); padding: 14px; border-radius: 8px; border-left: 3px solid var(--color-primary); font-size: 0.9rem; margin-bottom: 15px;">
+                                <strong style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px;">LLM Synthesized RAG Context:</strong>
+                                "Student attendance has deteriorated by 40% this term. Psychologist notes indicate persistent focus problems due to family stress. Ann Model identifies high vulnerability to mathematics failure."
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Reviewer Comments & Adjustments</label>
+                                <textarea class="form-control" rows="2" placeholder="Modify RAG action details or write custom recommendation instructions..."></textarea>
+                            </div>
+
+                            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                <button class="btn btn-secondary" onclick="rejectHITL('hitl-item-1')">Reject Alert</button>
+                                <button class="btn btn-primary" onclick="approveHITL('hitl-item-1', 'Alexander Wright')">Approve Report</button>
+                            </div>
+                        </div>
+
+                        <!-- Queue Item 2 -->
+                        <div class="card hitl-card" id="hitl-item-2">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                <div>
+                                    <h3 style="font-size: 1.15rem; font-weight: 700;">Emily Martinez (ID: STU-0243)</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Predictive Risk: <strong style="color: var(--color-danger);">89.7%</strong> &bull; Class Grade Average: <b>C-</b></p>
+                                </div>
+                                <span class="badge-tag danger">Awaiting Audit</span>
+                            </div>
+                            
+                            <div style="background-color: var(--bg-primary); padding: 14px; border-radius: 8px; border-left: 3px solid var(--color-primary); font-size: 0.9rem; margin-bottom: 15px;">
+                                <strong style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px;">LLM Synthesized RAG Context:</strong>
+                                "Emily is exhibiting signs of severe academic anxiety and homework avoidance, though core cognitive performance remains high. Intervention should target time management assistance."
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Reviewer Comments & Adjustments</label>
+                                <textarea class="form-control" rows="2" placeholder="Modify RAG action details or write custom recommendation instructions..."></textarea>
+                            </div>
+
+                            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                <button class="btn btn-secondary" onclick="rejectHITL('hitl-item-2')">Reject Alert</button>
+                                <button class="btn btn-primary" onclick="approveHITL('hitl-item-2', 'Emily Martinez')">Approve Report</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: HITL Stats -->
+                    <div class="card glass-panel" style="display: flex; flex-direction: column; gap: 15px; height: fit-content;">
+                        <h3 class="card-title">HITL Queue Stats</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                            <div style="background-color: var(--bg-primary); padding: 12px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-warning);" id="hitl-pending-count">2</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Awaiting Audit</div>
+                            </div>
+                            <div style="background-color: var(--bg-primary); padding: 12px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-success);" id="hitl-approved-count">3</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Approved Today</div>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Human-in-the-loop validation filters out model hallucination vectors and secures standard counselor-parent confidentiality protocols.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECTION: EXPLAINABILITY (XAI)
+                 ========================================== -->
+            <section class="app-section" id="explainability">
+                <div class="section-header">
+                    <h1 class="section-title">Explainable AI (XAI) Laboratory</h1>
+                    <p class="section-desc">Interact with local SHAP feature attributions and analyze why the deep learning pipeline generated specific risk scores.</p>
+                </div>
+
+                <div class="two-col-layout">
+                    <!-- Left: Focus analysis -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title" id="xai-student-title">Selected Student: Alexander Wright</h2>
+                            <span class="badge-tag danger" id="xai-risk-badge">94.2% Risk Score</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px;">The SHAP value represents the directional pull each factor has on the default baseline student risk output (50%).</p>
+
+                        <!-- Interactive SHAP Bar chart simulated via HTML/CSS -->
+                        <div style="display: flex; flex-direction: column; gap: 16px;" id="shap-bar-container">
+                            <!-- Attendance -->
+                            <div>
+                                <div class="xai-bar-row">
+                                    <div class="xai-bar-label">High Absences</div>
+                                    <div class="xai-bar-progress">
+                                        <div class="progress-bar-container"><div class="progress-bar-fill danger" style="width: 76%;" id="bar-att"></div></div>
+                                    </div>
+                                    <div class="xai-bar-val positive" id="val-att">+0.38</div>
+                                </div>
+                            </div>
+                            <!-- Failures -->
+                            <div>
+                                <div class="xai-bar-row">
+                                    <div class="xai-bar-label">Past Failures</div>
+                                    <div class="xai-bar-progress">
+                                        <div class="progress-bar-container"><div class="progress-bar-fill danger" style="width: 50%;" id="bar-fail"></div></div>
+                                    </div>
+                                    <div class="xai-bar-val positive" id="val-fail">+0.25</div>
+                                </div>
+                            </div>
+                            <!-- Grade Trend -->
+                            <div>
+                                <div class="xai-bar-row">
+                                    <div class="xai-bar-label">Midterm Grade Fall</div>
+                                    <div class="xai-bar-progress">
+                                        <div class="progress-bar-container"><div class="progress-bar-fill danger" style="width: 36%;" id="bar-g1"></div></div>
+                                    </div>
+                                    <div class="xai-bar-val positive" id="val-g1">+0.18</div>
+                                </div>
+                            </div>
+                            <!-- Parent Ed -->
+                            <div>
+                                <div class="xai-bar-row">
+                                    <div class="xai-bar-label">Parent Education</div>
+                                    <div class="xai-bar-progress">
+                                        <div class="progress-bar-container"><div class="progress-bar-fill danger" style="width: 30%;" id="bar-g2"></div></div>
+                                    </div>
+                                    <div class="xai-bar-val positive" id="val-g2">+0.15</div>
+                                </div>
+                            </div>
+                            <!-- Study Time -->
+                            <div>
+                                <div class="xai-bar-row">
+                                    <div class="xai-bar-label">Study Time</div>
+                                    <div class="xai-bar-progress">
+                                        <div class="progress-bar-container" style="direction: rtl;"><div class="progress-bar-fill success" style="width: 24%;" id="bar-study"></div></div>
+                                    </div>
+                                    <div class="xai-bar-val negative" id="val-study">-0.12</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: XAI interpretation -->
+                    <div class="card glass-panel" style="display: flex; flex-direction: column; gap: 15px;">
+                        <h3 class="card-title">Understanding SHAP</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                            <b>Positive (+ Red)</b> values pull the prediction towards a higher academic risk classification. Lower study hours and excessive absences represent standard risk-increasing variables.
+                        </p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                            <b>Negative (- Green)</b> values represent stabilizing factors that reduce the likelihood of academic dropouts, such as extracurricular student support hours.
+                        </p>
+                        <div style="background-color: var(--bg-primary); padding: 12px; border-radius: 8px; margin-top: 10px;">
+                            <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">Global Model Feature Importance:</h4>
+                            <ol style="font-size: 0.8rem; padding-left: 16px; display: flex; flex-direction: column; gap: 6px;">
+                                <li>Attendance Rate (Average impact: 0.32)</li>
+                                <li>Class Failures Count (Average impact: 0.28)</li>
+                                <li>Term 1 Grades (Average impact: 0.18)</li>
+                                <li>Study Hours Weekly (Average impact: 0.14)</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECTION: REPORTS
+                 ========================================== -->
+            <section class="app-section" id="reports">
+                <div class="section-header">
+                    <h1 class="section-title">Academic Interventions & Exports</h1>
+                    <p class="section-desc">Generate premium PDF counselor summaries or editable Word DOCX action files incorporating predictive graphs and analyst notes.</p>
+                </div>
+
+                <div class="two-col-layout">
+                    <!-- Left: Report Generation Form -->
+                    <div class="card">
+                        <h2 class="card-title" style="margin-bottom: 20px;">Compile New Intervention Plan</h2>
+                        <form id="report-form" onsubmit="event.preventDefault(); generateReport();">
+                            <div class="form-group">
+                                <label class="form-label">Student Recipient</label>
+                                <select class="form-control" id="report-student">
+                                    <option value="Alexander Wright">Alexander Wright (STU-0091) - High Risk</option>
+                                    <option value="Emily Martinez">Emily Martinez (STU-0243) - High Risk</option>
+                                    <option value="Marcus Thompson">Marcus Thompson (STU-1082) - Medium Risk</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Intervention Category</label>
+                                <select class="form-control">
+                                    <option>Academic Tutoring & Extra Hours</option>
+                                    <option>Counselor Counseling & Mental Health Care</option>
+                                    <option>Attendance Improvement Contract</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Custom Analyst Recommendations</label>
+                                <textarea class="form-control" rows="4" placeholder="Enter custom action guides, scheduled peer review meetings, or notes..."></textarea>
+                            </div>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bx bxs-file-pdf"></i> Generate & Download PDF Report
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right: Completed Reports list -->
+                    <div class="card glass-panel" style="display: flex; flex-direction: column; gap: 15px;">
+                        <h3 class="card-title">Recent Generated Reports</h3>
+                        <div style="display: flex; flex-direction: column; gap: 10px;" id="reports-list">
+                            <!-- Report 1 -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background-color: var(--bg-primary); border-radius: 8px; border-left: 3px solid var(--color-success);">
+                                <div>
+                                    <h4 style="font-size: 0.85rem; font-weight: 700;">Alexander Wright Report</h4>
+                                    <p style="font-size: 0.75rem; color: var(--text-muted);">PDF Generated &bull; Today, 2:10 PM</p>
+                                </div>
+                                <button class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.75rem;"><i class="bx bx-download"></i></button>
+                            </div>
+                            <!-- Report 2 -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background-color: var(--bg-primary); border-radius: 8px; border-left: 3px solid var(--color-success);">
+                                <div>
+                                    <h4 style="font-size: 0.85rem; font-weight: 700;">Marcus Thompson Report</h4>
+                                    <p style="font-size: 0.75rem; color: var(--text-muted);">DOCX Generated &bull; Yesterday, 4:32 PM</p>
+                                </div>
+                                <button class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.75rem;"><i class="bx bx-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ==========================================
+             FOOTER
+             ========================================== -->
+        <footer class="footer">
+            <div class="footer-logo">
+                <div class="footer-logo-icon">🎓</div>
+                <span>EduCopilot &copy; 2026</span>
+            </div>
+            <div>Integrated AI Decision Support Engine</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Documentation</a>
+                <a href="#" class="footer-link">Support</a>
+                <a href="#" class="footer-link">Settings</a>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Custom scripting -->
+    <script src="app.js"></script>
+</body>
+</html>
