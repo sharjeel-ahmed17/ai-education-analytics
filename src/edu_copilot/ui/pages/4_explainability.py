@@ -74,7 +74,7 @@ else:
                     color_continuous_scale=px.colors.sequential.Blues
                 )
                 fig.update_layout(yaxis={'categoryorder':'total ascending'}, height=400)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             except Exception as e:
                 st.error(f"Error calculating feature importances: {e}")
                 
@@ -151,7 +151,7 @@ else:
                     fig.add_vline(x=0, line_dash="dash", line_color="#475569")
                     fig.update_layout(yaxis={'categoryorder':'total ascending'}, height=450)
                     
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width='stretch')
                     
                     # Log baseline probability
                     st.write(f"📈 **Base Expected Probability (Reference Center)**: {shap_results['base_value']:.2%}")

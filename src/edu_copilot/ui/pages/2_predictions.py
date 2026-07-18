@@ -60,7 +60,7 @@ else:
             }
             
             df_metrics = pd.DataFrame(metrics_dict)
-            st.dataframe(df_metrics, use_container_width=True)
+            st.dataframe(df_metrics, width='stretch')
             
             # Button to trigger pipeline
             if st.button("Generate Diagnostic & Prediction"):

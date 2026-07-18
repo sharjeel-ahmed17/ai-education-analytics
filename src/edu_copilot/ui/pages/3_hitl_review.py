@@ -125,7 +125,7 @@ try:
             btn_approve, btn_reject, btn_modify = st.columns(3)
             
             # Case 1: Approve as is
-            if btn_approve.button("Approve (As Is)", use_container_width=True):
+            if btn_approve.button("Approve (As Is)", width='stretch'):
                 approve_recommendation(db, review.id, notes=reviewer_notes)
                 
                 # Parse and save final report
@@ -144,13 +144,13 @@ try:
                 st.rerun()
                 
             # Case 2: Reject prediction
-            if btn_reject.button("Reject (False Alarm)", use_container_width=True):
+            if btn_reject.button("Reject (False Alarm)", width='stretch'):
                 reject_recommendation(db, review.id, notes=reviewer_notes)
                 st.warning("AI warning has been marked as Rejected / False Alarm.")
                 st.rerun()
                 
             # Case 3: Modify and save
-            if btn_modify.button("Modify & Finalize", use_container_width=True):
+            if btn_modify.button("Modify & Finalize", width='stretch'):
                 modify_recommendation(db, review.id, modified_text=edited_report, notes=reviewer_notes)
                 
                 # Parse and save modified report

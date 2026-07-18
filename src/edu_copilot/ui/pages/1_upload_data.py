@@ -178,7 +178,7 @@ try:
                 "Has Tabular Stats": "Yes" if tabular else "No",
                 "Registration Date": s.created_at.strftime("%Y-%m-%d %H:%M:%S")
             })
-        st.dataframe(pd.DataFrame(display_data), use_container_width=True)
+        st.dataframe(pd.DataFrame(display_data), width='stretch')
     else:
         st.info("The database is currently empty.")
 finally:

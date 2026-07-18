@@ -99,7 +99,7 @@ try:
                 data=pdf_stream,
                 file_name=f"Intervention_Report_{report_data.student_id}.pdf",
                 mime="application/pdf",
-                use_container_width=True
+                width='stretch'
             )
             
         # 2. Compile DOCX stream
@@ -113,7 +113,7 @@ try:
                 data=docx_stream,
                 file_name=f"Intervention_Report_{report_data.student_id}.docx",
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                use_container_width=True
+                width='stretch'
             )
 except Exception as e:
     st.error(f"Error compiling download streams: {e}")
