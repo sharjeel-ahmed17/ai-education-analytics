@@ -2,7 +2,7 @@ import os
 from typing import List
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
-from langchain_community.vectorstores import Qdrant
+from langchain_qdrant import Qdrant
 from langchain_core.documents import Document
 from edu_copilot.config import settings
 

@@ -76,10 +76,10 @@ st.markdown("""
         letter-spacing: 0.05em;
     }
 </style>
-""", unsafe_allowed_ok=True)
+""", unsafe_allow_html=True)
 
-st.markdown('<div class="main-title">AI Co-Pilot for Education Analytics</div>', unsafe_allowed_ok=True)
-st.markdown('<div class="sub-title">A production-grade decision support platform combining deep predictive modeling with Human-in-the-Loop controls.</div>', unsafe_allowed_ok=True)
+st.markdown('<div class="main-title">AI Co-Pilot for Education Analytics</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">A production-grade decision support platform combining deep predictive modeling with Human-in-the-Loop controls.</div>', unsafe_allow_html=True)
 
 # Fetch current stats from DB
 db = SessionLocal()
@@ -103,7 +103,7 @@ with col1:
         f'<div class="metric-label">Enrolled Students</div>'
         f'<div class="metric-value">{total_students}</div>'
         f'</div>', 
-        unsafe_allowed_ok=True
+        unsafe_allow_html=True
     )
 with col2:
     st.markdown(
@@ -111,7 +111,7 @@ with col2:
         f'<div class="metric-label">Neural Net Runs</div>'
         f'<div class="metric-value">{total_preds}</div>'
         f'</div>', 
-        unsafe_allowed_ok=True
+        unsafe_allow_html=True
     )
 with col3:
     st.markdown(
@@ -119,7 +119,7 @@ with col3:
         f'<div class="metric-label">Pending Reviews</div>'
         f'<div class="metric-value">{pending_reviews}</div>'
         f'</div>', 
-        unsafe_allowed_ok=True
+        unsafe_allow_html=True
     )
 with col4:
     st.markdown(
@@ -127,7 +127,7 @@ with col4:
         f'<div class="metric-label">Finalized Reports</div>'
         f'<div class="metric-value">{approved_reports}</div>'
         f'</div>', 
-        unsafe_allowed_ok=True
+        unsafe_allow_html=True
     )
 
 st.markdown("---")
