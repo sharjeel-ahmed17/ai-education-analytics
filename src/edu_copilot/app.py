@@ -145,7 +145,6 @@ with col_left:
     *   **3. HITL Review Queue**: Audit pending warnings. Modify AI recommendations, add professional notes, and save actions.
     *   **4. Explainability (XAI)**: View individual feature attributions via **SHAP explanations** and review global feature importances.
     *   **5. Export Reports**: Synthesize diagnostic outputs into branded **PDF** and **Word (DOCX)** documents.
-    *   **6. Business Case**: Outline of the problem, monetization strategy, and go-to-market plan.
     """)
 
 with col_right:
