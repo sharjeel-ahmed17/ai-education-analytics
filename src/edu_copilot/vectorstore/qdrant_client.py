@@ -25,7 +25,17 @@ class QdrantVectorStore:
 
     def _ensure_collection(self) -> None:
         try:
-            self.client.get_collection(self.collection_name)
+            col = self.client.get_collection(self.collection_name)
+            # Ensure the payload index is created even if the collection already exists
+            if "metadata.student_id" not in col.payload_schema:
+                try:
+                    self.client.create_payload_index(
+                        collection_name=self.collection_name,
+                        field_name="metadata.student_id",
+                        field_schema=models.PayloadSchemaType.KEYWORD,
+                    )
+                except Exception as e:
+                    print(f"Error creating payload index: {e}")
         except Exception:
             try:
                 test_embedding = self.embeddings.embed_query("test query")
@@ -41,6 +51,14 @@ class QdrantVectorStore:
                     distance=models.Distance.COSINE
                 ),
             )
+            try:
+                self.client.create_payload_index(
+                    collection_name=self.collection_name,
+                    field_name="metadata.student_id",
+                    field_schema=models.PayloadSchemaType.KEYWORD,
+                )
+            except Exception as e:
+                print(f"Error creating payload index on new collection: {e}")
             print(f"Created vector store collection '{self.collection_name}' with size={vector_dim}.")
 
     def add_documents(self, documents: List[Document]) -> None:

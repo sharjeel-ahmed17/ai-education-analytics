@@ -37,7 +37,7 @@ def get_embeddings_model() -> Embeddings:
     """
     if settings.cohere_api_key:
         print("Using CohereEmbeddings...")
-        return CohereEmbeddings(cohere_api_key=settings.cohere_api_key)
+        return CohereEmbeddings(model="embed-english-light-v3.0", cohere_api_key=settings.cohere_api_key)
     elif settings.openai_api_key:
         print("Using OpenAIEmbeddings...")
         return OpenAIEmbeddings(openai_api_key=settings.openai_api_key)
